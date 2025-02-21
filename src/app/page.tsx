@@ -1,101 +1,97 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { CONNECTIONS } from '@/components/Connection/data';
+import { SKILLS } from '@/components/Skill/data';
+import { Magnetic } from '@/components/ui/magnetic';
+import { WORK_EXPERIENCE } from '@/components/WorkExperience/data';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import cn from 'classnames';
+
+function MagneticConnection({
+  children,
+  link,
+}: {
+  children: React.ReactNode;
+  link: string;
+}) {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Magnetic springOptions={{ bounce: 0 }} intensity={0.5}>
+      <a
+        href={link}
+        className="group relative inline-flex shrink-0 items-center gap-[1px] rounded-full px-2.5 py-1 text-sm transition-colors duration-200"
+      >
+        {children}
+      </a>
+    </Magnetic>
+  );
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function Page() {
+  return (
+    <div className="space-y-24">
+      <div className="flex-1">
+        <p>
+          Back-end developer passionate about JavaScript, TypeScript, and
+          Node.js. Constantly exploring new technologies, and optimizing
+          back-end solutions. Linux enthusiast.
+        </p>
+      </div>
+      <div>
+        <h3 className="mb-5 text-lg font-medium">Where I&apos;ve Worked</h3>
+
+        <div className="flex flex-col space-y-2">
+          {WORK_EXPERIENCE.map((exp) => (
+            <div
+              className="border border-[#9580FF] rounded-[15px] p-4"
+              key={exp.id}
+            >
+              <div className="flex flex-row justify-between">
+                <div>
+                  <h4>{exp.title}</h4>
+                  <p className="opacity-65">{exp.company}</p>
+                </div>
+                <p>
+                  {exp.start} - {exp.end}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      <div>
+        <h3 className="mb-5 text-lg font-medium">Skills</h3>
+
+        <div className="inline-grid grid-cols-5 gap-4 justify-items-center">
+          {SKILLS.map((skill) => (
+            <div key={skill.key} className="group">
+              <FontAwesomeIcon
+                className={cn(
+                  skill.color,
+                  'text-5xl transition-colors duration-150'
+                )}
+                icon={skill.icon}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <h3 className="mb-5 text-lg font-medium">Connect</h3>
+        <p className="mb-5 opacity-65">
+          Feel free to contact me at{' '}
+          <a className="underline" href="mailto:douglastenfen@gmail.com">
+            douglastenfen@gmail.com
+          </a>
+        </p>
+
+        <div className="flex items-center justify-start space-x-3">
+          {CONNECTIONS.map((connection) => (
+            <MagneticConnection key={connection.key} link={connection.link}>
+              <FontAwesomeIcon className="text-2xl" icon={connection.icon} />
+            </MagneticConnection>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
