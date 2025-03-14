@@ -79,8 +79,8 @@ export default function Page() {
         <h3 className="mb-5 text-lg font-medium">Connect</h3>
         <p className="mb-5 opacity-65">
           Feel free to contact me at{' '}
-          <a className="underline" href="mailto:douglastenfen@gmail.com">
-            douglastenfen@gmail.com
+          <a className="underline" href="mailto:hi@douglastenfen.dev">
+            hi@douglastenfen.dev
           </a>
         </p>
 
