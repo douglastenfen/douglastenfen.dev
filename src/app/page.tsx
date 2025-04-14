@@ -6,6 +6,7 @@ import { Magnetic } from '@/components/ui/magnetic';
 import { WORK_EXPERIENCE } from '@/components/WorkExperience/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cn from 'classnames';
+import { useEffect, useState } from 'react';
 
 function MagneticConnection({
   children,
@@ -27,6 +28,28 @@ function MagneticConnection({
 }
 
 export default function Page() {
+  const [selectedExp, setSelectedExp] = useState<
+    null | (typeof WORK_EXPERIENCE)[0]
+  >(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedExp(null);
+      }
+    };
+
+    if (selectedExp) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.classList.add('overflow-hidden');
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [selectedExp]);
+
   return (
     <div className="space-y-24">
       <div className="flex-1">
@@ -42,8 +65,14 @@ export default function Page() {
         <div className="flex flex-col space-y-2">
           {WORK_EXPERIENCE.map((exp) => (
             <div
-              className="border border-[#9580FF] rounded-[15px] p-4"
+              className="border border-[#9580FF] rounded-[15px] p-4 cursor-pointer hover:bg-[#9580FF]/10 transition"
               key={exp.id}
+              onClick={() =>
+                setSelectedExp({
+                  ...exp,
+                  description: exp.description || '',
+                })
+              }
             >
               <div className="flex flex-row justify-between">
                 <div>
@@ -57,6 +86,39 @@ export default function Page() {
             </div>
           ))}
         </div>
+        {selectedExp && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-[#22212C] rounded-xl p-6 max-w-md w-full shadow-lg relative">
+              <button
+                onClick={() => setSelectedExp(null)}
+                className="absolute top-2 right-3 hover:text-[#9580FF]"
+              >
+                ✕
+              </button>
+              <h4 className="text-xl font-semibold mb-2">
+                {selectedExp.title}
+              </h4>
+              <p className="text-sm opacity-65 mb-1">{selectedExp.company}</p>
+              <p className="text-sm mb-4">
+                {selectedExp.start} - {selectedExp.end}
+              </p>
+              <div className="mb-4 text-sm md:text-base leading-relaxed max-w-[600px]">
+                <p>{selectedExp.description}</p>
+              </div>
+              <hr />
+              <div className="flex flex-wrap gap-2">
+                {selectedExp.techs?.map((tech) => (
+                  <span
+                    key={tech}
+                    className="bg-[#22212C] text-white px-2 py-1 rounded-full text-xs"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <div>
         <h3 className="mb-5 text-lg font-medium">Skills</h3>
